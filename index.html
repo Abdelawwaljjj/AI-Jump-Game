@@ -3,11 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Platformer</title>
+    <title>Fire Jump</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body><center>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <script src="script.js"></script></center>
+<body>
+    <!-- Parallax Background -->
+    <div class="parallax-bg"></div>
+
+    <!-- Main Menu Container -->
+    <div id="mainMenu" class="menu">
+        <div class="menu-content">
+            <h1 class="title">Fire Jump</h1>
+            <button id="startGameButton" class="menu-button neon-button">Start Game</button>
+            <button id="instructionsButton" class="menu-button neon-button">Instructions</button>
+            <button id="exitButton" class="menu-button neon-button">Exit</button>
+        </div>
+    </div>
+    
+    <!-- Game Canvas -->
+    <canvas id="gameCanvas" style="display:none;"></canvas>
+    
+    <script src="script.js"></script>
 </body>
 </html>

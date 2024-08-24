@@ -1,12 +1,123 @@
 body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+}
+
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('background.png') repeat;
+    background-size: cover;
+    z-index: -2;
+    animation: parallaxScroll 20s linear infinite;
+}
+
+@keyframes parallaxScroll {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -1000px 0;
+    }
+}
+
+.menu {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #222;
-    margin: 0;
+    width: 100%;
+    flex-direction: column;
+    text-align: center;
+    z-index: 1;
+}
+
+.menu-content {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    max-width: 90%;
+    width: 350px;
+}
+
+.title {
+    font-size: 50px;
+    margin-bottom: 30px;
+    color: #ffdd59;
+    text-shadow: 0 0 20px rgba(255, 221, 89, 0.7), 0 0 30px rgba(255, 221, 89, 0.5);
+    animation: fadeIn 1.5s ease-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.neon-button {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+    font-size: 22px;
+    cursor: pointer;
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    transition: color 0.3s;
+    overflow: hidden;
+}
+
+.neon-button:before, .neon-button:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: opacity 0.3s;
+}
+
+.neon-button:before {
+    opacity: 0;
+    transform: scale(1.5);
+}
+
+.neon-button:hover:before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.neon-button:after {
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transform: scale(1.2);
+}
+
+.neon-button:hover:after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.neon-button:hover {
+    color: #ff5733;
+    box-shadow: 0 0 15px rgba(255, 87, 51, 0.5), 0 0 30px rgba(255, 87, 51, 0.3);
+    text-shadow: 0 0 5px rgba(255, 87, 51, 0.8), 0 0 10px rgba(255, 87, 51, 0.6);
 }
 
 canvas {
-    border: 2px solid #fff;
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    z-index: 0;
 }

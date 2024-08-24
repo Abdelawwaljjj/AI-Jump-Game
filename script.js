@@ -533,20 +533,20 @@ instructionsButton.addEventListener('click', () => {
 
 // Exit button logic specifically for mobile using Cordova/Capacitor
 exitButton.addEventListener('click', () => {
-    if (confirm("Are you sure you want to exit?")) {
-        // Check if running in Cordova
-        if (window.cordova && navigator.app) {
-            navigator.app.exitApp(); // Exit Cordova app
-        }
-        // Check if running in Capacitor
-        else if (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App) {
-            Capacitor.Plugins.App.exitApp(); // Exit Capacitor app
-        }
-        // Fallback alert if neither is detected
-        else {
-            alert("Exit functionality is not supported on this platform. Please close the app manually.");
-        }
-    }
+  if (confirm("Are you sure you want to exit?")) {
+      // Check if running in Cordova
+      if (window.cordova && navigator.app) {
+          navigator.app.exitApp(); // Exit Cordova app
+      }
+      // Check if running in Capacitor
+      else if (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App) {
+          Capacitor.Plugins.App.exitApp(); // Exit Capacitor app
+      }
+      // Fallback alert if neither is detected
+      else {
+          alert("Exit functionality is not supported on this platform. Please close the app manually.");
+      }
+  }
 });
 
 // Touch ondersteuning voor reset-knop
