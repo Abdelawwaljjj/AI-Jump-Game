@@ -215,8 +215,8 @@
             velocityX: 0,
             velocityY: 0,
             isJumping: false,
-            speed: 4, // Initial speed
-            jumpHeight: 20, // Increased jump height for better landing
+            speed: 4, // Initial speed, same as the right arrow key
+            jumpHeight: 10, // Adjusted jump height for better gameplay
             score: 0,
             currentImage: null,
             explosionCounter: 0,
@@ -471,7 +471,7 @@
             player.velocityX = 0;
             player.velocityY = 0;
             player.score = 0;
-            player.speed = 4; // Reset speed to the initial speed
+            player.speed = 4; // Reset speed to initial value
             camera.x = 0;
             platforms.length = 0;
             coins.length = 0;
@@ -673,8 +673,8 @@
         startGameButton.addEventListener('click', () => {
             mainMenu.style.display = 'none';
             canvas.style.display = 'block';
-            resetGame(); // Ensure the game starts fresh
-            gameLoop();
+            resetGame(); // Ensure game starts fresh
+            startGame(); // Start the game loop
         });
 
         // Show instructions when Instructions button is clicked
@@ -725,8 +725,12 @@
 
         generatePlatforms();
         loadAssets(function() {
-            // Game does not start automatically anymore
+            gameLoop();
         });
+
+        function startGame() {
+            gameLoop();
+        }
     </script>
 </body>
 </html>
