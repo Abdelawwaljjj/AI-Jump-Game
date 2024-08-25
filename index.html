@@ -215,8 +215,8 @@
             velocityX: 0,
             velocityY: 0,
             isJumping: false,
-            speed: 4, // Initial speed, same as the right arrow key
-            jumpHeight: 10, // Adjusted jump height for better gameplay
+            speed: 5, // Adjusted speed to match right arrow key
+            jumpHeight: 15, // Increased jump height
             score: 0,
             currentImage: null,
             explosionCounter: 0,
@@ -471,7 +471,7 @@
             player.velocityX = 0;
             player.velocityY = 0;
             player.score = 0;
-            player.speed = 4; // Reset speed to initial value
+            player.speed = 5; // Reset speed to initial value
             camera.x = 0;
             platforms.length = 0;
             coins.length = 0;
