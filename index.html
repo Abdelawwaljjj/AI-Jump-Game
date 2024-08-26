@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -623,24 +624,28 @@
           ctx.fillText(`High Score: ${highScore}`, canvas.width - 180, 30);
         }
 
-        function drawGameOverAndReset() {
-          if (gameOver) {
-            ctx.fillStyle = 'red';
-            ctx.font = 'bold 60px Arial';  // Make the "Game Over" text super bold
-            ctx.fillText('Game Over', canvas.width / 2 - 150, canvas.height / 2 - 20);
+function drawGameOverAndReset() {
+    if (gameOver) {
+        ctx.fillStyle = 'red';
+        ctx.font = 'bold 60px Arial';  // Make the "Game Over" text super bold
+        ctx.textAlign = 'center';  // Center the "Game Over" text
+        ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 20);
 
-            ctx.fillStyle = 'blue';
-            const buttonWidth = 160;  // Make the reset button bigger
-            const buttonHeight = 60;  // Adjusted reset button height
-            const buttonX = canvas.width / 2 - buttonWidth / 2;
-            const buttonY = canvas.height / 2 + 20;
+        ctx.fillStyle = 'blue';
+        const buttonWidth = 160;  // Make the reset button bigger
+        const buttonHeight = 60;  // Adjusted reset button height
+        const buttonX = canvas.width / 2 - buttonWidth / 2;
+        const buttonY = canvas.height / 2 + 20;
 
-            ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 30px Arial';  // Larger font for reset button text
-            ctx.fillText('Reset', buttonX + 35, buttonY + 40);
-          }
-        }
+        ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 30px Arial';  // Larger font for reset button text
+        ctx.textAlign = 'center';  // Center the "Reset" text
+        ctx.textBaseline = 'middle';  // Vertically center the "Reset" text
+        ctx.fillText('Reset', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+    }
+}
 
         function drawBackground() {
           const scale = canvas.height / backgroundImage.height;
