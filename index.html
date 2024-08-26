@@ -143,7 +143,7 @@
     <!-- Main Menu Container -->
     <div id="mainMenu" class="menu">
         <div class="menu-content">
-            <h1 class="title">City Jump</h1> <!-- Updated title in menu -->
+            <h1 class="title">City Jump</h1>
             <button id="startGameButton" class="menu-button neon-button">Start Game</button>
             <button id="instructionsButton" class="menu-button neon-button">Instructions</button>
             <button id="exitButton" class="menu-button neon-button">Exit</button>
@@ -615,17 +615,26 @@
     }
 
     function drawScoreBox() {
-      drawRoundedRect(5, 5, 150, 35, 5, 'white', 'black', 3);
-      ctx.fillStyle = 'black';
+      ctx.save();
+      ctx.translate(0, 0); // Ensure translation is reset
+
+      ctx.fillStyle = 'white';
       ctx.font = '20px Arial';
-      ctx.fillText(`Score: ${player.score}`, 10, 30);
+      ctx.fillText(`Score: ${player.score}`, 10, 30); // Draw Score at top-left corner
+
+      ctx.restore();
     }
 
     function drawHighScoreBox() {
-      drawRoundedRect(canvas.width - 185, 5, 180, 35, 5, 'white', 'black', 3);
-      ctx.fillStyle = 'black';
+      ctx.save();
+      ctx.translate(0, 0); // Ensure translation is reset
+
+      ctx.fillStyle = 'white';
       ctx.font = '20px Arial';
-      ctx.fillText(`High Score: ${highScore}`, canvas.width - 180, 30);
+      ctx.textAlign = 'right'; // Align text to the right
+      ctx.fillText(`High Score: ${highScore}`, canvas.width - 10, 30); // Draw High Score at top-right corner
+
+      ctx.restore();
     }
 
     function drawGameOverAndReset() {
@@ -639,12 +648,17 @@
         // Update reset button to be larger
         const resetButtonWidth = 160;
         const resetButtonHeight = 60;
+        const buttonX = canvas.width / 2 - resetButtonWidth / 2;
+        const buttonY = canvas.height / 2 + 20;
+
         ctx.fillStyle = 'blue';
-        ctx.fillRect(canvas.width / 2 - resetButtonWidth / 2, canvas.height / 2 + 20, resetButtonWidth, resetButtonHeight);
+        ctx.fillRect(buttonX, buttonY, resetButtonWidth, resetButtonHeight);
 
         ctx.fillStyle = 'white';
         ctx.font = 'bold 25px Arial'; // Made button text slightly larger
-        ctx.fillText('Reset', canvas.width / 2, canvas.height / 2 + 55);
+        ctx.textAlign = 'center'; // Center the text
+        ctx.textBaseline = 'middle'; // Center vertically
+        ctx.fillText('Reset', canvas.width / 2, buttonY + resetButtonHeight / 2); // Centered text within button
       }
     }
 
@@ -659,31 +673,6 @@
       }
     }
 
-    function drawRoundedRect(x, y, width, height, radius, fillColor, borderColor, borderWidth) {
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.lineTo(x + width - radius, y);
-      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-      ctx.lineTo(x + width, y + height - radius);
-      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-      ctx.lineTo(x + radius, y + height);
-      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-      ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y);
-      ctx.closePath();
-
-      if (fillColor) {
-        ctx.fillStyle = fillColor;
-        ctx.fill();
-      }
-
-      if (borderColor && borderWidth) {
-        ctx.lineWidth = borderWidth;
-        ctx.strokeStyle = borderColor;
-        ctx.stroke();
-      }
-    }
-
     function gameLoop() {
       update();
       render();
@@ -695,7 +684,8 @@
         mainMenu.style.display = 'none';
         canvas.style.display = 'block';
         backgroundMusic.play(); // Play background music on game start
-        startGame();
+        resetGame(); // Reset game to initial state
+        gameLoop();
     });
 
     // Show instructions when Instructions button is clicked
