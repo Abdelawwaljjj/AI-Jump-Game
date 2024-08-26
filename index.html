@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -624,24 +623,24 @@
           ctx.fillText(`High Score: ${highScore}`, canvas.width - 180, 30);
         }
 
-    function drawGameOverAndReset() {
-    if (gameOver) {
-        ctx.fillStyle = 'blue';
-        const buttonWidth = 160;
-        const buttonHeight = 60;
-        const buttonX = canvas.width / 2 - buttonWidth / 2;
-        const buttonY = canvas.height / 2 + 20;
+        function drawGameOverAndReset() {
+          if (gameOver) {
+            ctx.fillStyle = 'red';
+            ctx.font = 'center';  // Make the "Game Over" text super bold
+            ctx.fillText('Game Over', canvas.width / 2 - 150, canvas.height / 2 - 20);
 
-        ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+            ctx.fillStyle = 'blue';
+            const buttonWidth = 160;  // Make the reset button bigger
+            const buttonHeight = 60;  // Adjusted reset button height
+            const buttonX = canvas.width / 2 - buttonWidth / 2;
+            const buttonY = canvas.height / 2 + 20;
 
-        ctx.fillStyle = 'white';
-        ctx.font = 'bold 30px Arial';
-        ctx.textAlign = 'center';  // Center the "Reset" text horizontally
-        ctx.textBaseline = 'middle';  // Center the "Reset" text vertically
-        ctx.fillText('Reset', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
-    }
-}
-
+            ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+            ctx.fillStyle = 'white';
+            ctx.font = 'center';  // Larger font for reset button text
+            ctx.fillText('Reset', buttonX + 35, buttonY + 40);
+          }
+        }
 
         function drawBackground() {
           const scale = canvas.height / backgroundImage.height;
