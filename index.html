@@ -560,7 +560,7 @@
           ctx.drawImage(
             player.currentImage,
             -player.x - characterWidth + characterWidth,
-                         player.y,
+            player.y,
             -characterWidth,
             characterHeight
           );
@@ -630,15 +630,21 @@
 
     function drawGameOverAndReset() {
       if (gameOver) {
+        // Update "Game Over" text to be super bold and large
         ctx.fillStyle = 'red';
-        ctx.font = '40px Arial';
-        ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+        ctx.font = 'bold 60px Arial'; // Increased font size and made it bold
+        ctx.textAlign = 'center'; // Center the text
+        ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 20);
 
+        // Update reset button to be larger
+        const resetButtonWidth = 160;
+        const resetButtonHeight = 60;
         ctx.fillStyle = 'blue';
-        ctx.fillRect(canvas.width / 2 - 60, canvas.height / 2 + 20, 120, 40);
+        ctx.fillRect(canvas.width / 2 - resetButtonWidth / 2, canvas.height / 2 + 20, resetButtonWidth, resetButtonHeight);
+
         ctx.fillStyle = 'white';
-        ctx.font = '20px Arial';
-        ctx.fillText('Reset', canvas.width / 2 - 25, canvas.height / 2 + 45);
+        ctx.font = 'bold 25px Arial'; // Made button text slightly larger
+        ctx.fillText('Reset', canvas.width / 2, canvas.height / 2 + 55);
       }
     }
 
@@ -722,10 +728,10 @@
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-        const buttonX = canvas.width / 2 - 60;
+        const buttonX = canvas.width / 2 - 80; // Adjusted button X for larger button
         const buttonY = canvas.height / 2 + 20;
-        const buttonWidth = 120;
-        const buttonHeight = 40;
+        const buttonWidth = 160; // Increased button width
+        const buttonHeight = 60; // Increased button height
 
         if (
           x >= buttonX &&
