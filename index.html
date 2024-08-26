@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -224,7 +225,7 @@
           velocityY: 0,
           isJumping: false,
           speed: 4, // Initial speed, same as the right arrow key
-          jumpHeight: 15,
+          jumpHeight: 14,
           score: 0,
           currentImage: null,
           explosionCounter: 0,
@@ -638,7 +639,7 @@
             ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
             ctx.fillStyle = 'white';
             ctx.font = 'bold 30px Arial';  // Larger font for reset button text
-            ctx.fillText('Reset', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+            ctx.fillText('Reset', buttonX + 40, buttonY + 40);
           }
         }
 
