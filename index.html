@@ -129,11 +129,26 @@
             padding: 20px;
             border-radius: 10px;
             border: 2px solid white;
-            position: absolute;
-            width: 100%;
+            position: fixed;
+            width: 80%;
+            max-width: 600px;
             box-sizing: border-box;
             display: none;
             z-index: 10;
+        }
+
+        #instructionBar {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #exitBar {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100px;
+            display: none;
         }
 
         .close-btn {
@@ -151,13 +166,6 @@
             font-weight: bold;
         }
 
-        /* Exit bar as horizontal rectangle at the top */
-        #exitBar {
-            top: 0;
-            height: 100px; /* Set the height to create a horizontal rectangle */
-            display: none; /* Hidden until triggered */
-        }
-
         canvas {
             display: block;
             width: 100%;
@@ -166,7 +174,6 @@
             z-index: 0;
         }
 
-        /* Stijlen voor de introductievideo */
         #introVideo {
             position: absolute;
             top: 0;
@@ -175,15 +182,12 @@
             height: 100%;
             z-index: 2;
             background-color: black;
-            display: none; /* Verborgen totdat de startknop wordt geklikt */
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Parallax Background -->
     <div class="parallax-bg"></div>
-
-    <!-- Main Menu Container -->
     <div id="mainMenu" class="menu">
         <div class="menu-content">
             <h1 class="title">City Jump</h1>
@@ -215,7 +219,6 @@
                 <p>Follow these steps and keep practicing to get better and better at City Jump. Have fun and good luck breaking your records!</p>
             </div>
 
-            <!-- Exit balk -->
             <div id="exitBar" class="chat-bar">
                 <div class="close-btn" onclick="closeExitBar()">x</div>
                 Are you sure you want to exit?
@@ -223,13 +226,9 @@
         </div>
     </div>
     
-    <!-- Introductievideo -->
     <video id="introVideo" src="intro-video.mp4"></video>
-
-    <!-- Game Canvas -->
     <canvas id="gameCanvas"></canvas>
     
-    <!-- Background Music -->
     <audio id="backgroundMusic" loop>
         <source src="background-music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
@@ -239,7 +238,6 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Menu elementen
         const mainMenu = document.getElementById('mainMenu');
         const startGameButton = document.getElementById('startGameButton');
         const instructionsButton = document.getElementById('instructionsButton');
@@ -247,18 +245,16 @@
         const backgroundMusic = document.getElementById('backgroundMusic');
         const introVideo = document.getElementById('introVideo');
 
-        // Instructie en exit balken
         const instructionBar = document.getElementById('instructionBar');
         const exitBar = document.getElementById('exitBar');
 
-        // Canvas grootte aanpassen
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
 
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas(); // Initieel canvas grootte instellen
+        resizeCanvas();
 
         let gameOver = false;
         let highScore = 0;
@@ -309,7 +305,7 @@
           velocityX: 0,
           velocityY: 0,
           isJumping: false,
-          speed: 4, // Initiële snelheid, zelfde als de rechterpijltjestoets
+          speed: 4,
           jumpHeight: 14,
           score: 0,
           currentImage: null,
@@ -443,13 +439,13 @@
         }
 
         function handlePlayerMovement() {
-          player.x += player.speed; // Automatische beweging naar rechts
+          player.x += player.speed;
           player.velocityX = player.speed;
-          player.speed += 0.000000001; // Verhoog de snelheid geleidelijk naarmate het spel vordert
+          player.speed += 0.0000005; // Increased speed increment
         }
 
         function handlePlayerVerticalMovement() {
-          player.velocityY += 0.5; // Zwaartekracht
+          player.velocityY += 0.5;
           player.y += player.velocityY;
 
           let onPlatform = false;
@@ -475,16 +471,15 @@
           player.isJumping = !onPlatform;
         }
 
-        // Voeg touch ondersteuning toe voor springen
         canvas.addEventListener('click', () => {
           if (!player.isJumping) {
-            player.velocityY = -player.jumpHeight; // Springen op klik
+            player.velocityY = -player.jumpHeight;
           }
         });
 
         canvas.addEventListener('touchstart', () => {
           if (!player.isJumping) {
-            player.velocityY = -player.jumpHeight; // Springen op aanraking
+            player.velocityY = -player.jumpHeight;
           }
         });
 
@@ -565,15 +560,15 @@
           player.velocityX = 0;
           player.velocityY = 0;
           player.score = 0;
-          player.speed = 4; // Snelheid resetten naar de initiële waarde
+          player.speed = 4;
           camera.x = 0;
           platforms.length = 0;
           coins.length = 0;
           generatePlatforms();
           player.explosionDrawn = false;
           player.explosionCounter = 0;
-          backgroundMusic.currentTime = 0; // Muziek opnieuw starten
-          backgroundMusic.play(); // Speel muziek opnieuw af bij reset
+          backgroundMusic.currentTime = 0;
+          backgroundMusic.play();
         }
 
         function loadHighScore() {
@@ -586,11 +581,11 @@
         function updateHighScore() {
           if (player.score > highScore) {
               highScore = player.score;
-              localStorage.setItem('highScore', highScore); // Sla de highscore op in localStorage
+              localStorage.setItem('highScore', highScore);
           }
         }
 
-        window.addEventListener('load', loadHighScore); // Laad highscore bij het laden van de pagina
+        window.addEventListener('load', loadHighScore);
 
         function update() {
           if (!gameOver) {
@@ -621,7 +616,7 @@
 
           if (player.y + player.height >= canvas.height - 50) {
             gameOver = true;
-            updateHighScore(); // Update en sla de highscore op bij game over
+            updateHighScore();
           }
         }
 
@@ -726,18 +721,18 @@
         function drawGameOverAndReset() {
           if (gameOver) {
             ctx.fillStyle = 'red';
-            ctx.font = 'bold 60px Arial';  // Maak de "Game Over" tekst extra vet
+            ctx.font = 'bold 60px Arial';
             ctx.fillText('Game Over', canvas.width / 2 - 150, canvas.height / 2 - 20);
 
             ctx.fillStyle = 'blue';
-            const buttonWidth = 160;  // Maak de resetknop groter
-            const buttonHeight = 60;  // Aangepaste resetknop hoogte
+            const buttonWidth = 160;
+            const buttonHeight = 60;
             const buttonX = canvas.width / 2 - buttonWidth / 2;
             const buttonY = canvas.height / 2 + 20;
 
             ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 30px Arial';  // Grotere tekst voor de resetknop
+            ctx.font = 'bold 30px Arial';
             ctx.fillText('Reset', buttonX + 40, buttonY + 40);
           }
         }
@@ -784,17 +779,15 @@
           requestAnimationFrame(gameLoop);
         }
 
-        // Spel starten nadat de video is afgelopen
         function startGame() {
             mainMenu.style.display = 'none';
             introVideo.style.display = 'none';
             canvas.style.display = 'block';
-            backgroundMusic.currentTime = 0; // Muziek opnieuw starten
-            backgroundMusic.play(); // Speel muziek af bij het starten
-            resetGame(); // Reset spelstatus en start het spel
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.play();
+            resetGame();
         }
 
-        // Schermoriëntatie naar landscape veranderen
         async function lockOrientation() {
             if (screen.orientation && screen.orientation.lock) {
                 try {
@@ -805,42 +798,36 @@
             }
         }
 
-        // Start Game knop event
         startGameButton.addEventListener('click', () => {
-            lockOrientation(); // Vergrendel de schermoriëntatie naar landscape
-            introVideo.style.display = 'block'; // Toon de video
-            introVideo.play(); // Speel de video af
-            introVideo.addEventListener('ended', startGame); // Start het spel na afloop van de video
+            lockOrientation();
+            introVideo.style.display = 'block';
+            introVideo.play();
+            introVideo.addEventListener('ended', startGame);
         });
 
-        // Instructies tonen
         instructionsButton.addEventListener('click', () => {
-            instructionBar.style.display = 'block'; // Toont de instructie balk
+            instructionBar.style.display = 'block';
         });
 
-        // Exit bericht tonen en mobiele exit-logica toevoegen
         exitButton.addEventListener('click', () => {
-            exitBar.style.display = 'block'; // Toon de exit balk als een horizontale rechthoek aan de bovenkant
+            exitBar.style.display = 'block';
         });
 
-        // Sluit de instructie balk
         function closeInstructionBar() {
             instructionBar.style.display = 'none';
         }
 
-        // Sluit de exit balk
         function closeExitBar() {
             exitBar.style.display = 'none';
         }
 
-        // Reset bij klikken op canvas tijdens game over
         canvas.addEventListener('click', (event) => {
           if (gameOver) {
             const rect = canvas.getBoundingClientRect();
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
 
-            const buttonX = canvas.width / 2 - 80;  // Aangepast naar de nieuwe knoopbreedte
+            const buttonX = canvas.width / 2 - 80;
             const buttonY = canvas.height / 2 + 20;
             const buttonWidth = 160;
             const buttonHeight = 60;
