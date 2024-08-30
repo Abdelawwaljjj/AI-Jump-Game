@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>City Jump</title>
+    <style>
+    .chat-bar {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+    .chat-bar .close-btn {
+        font-size: 20px;
+    }
+</style>
+
+<div id="instructionBar" class="chat-bar">
+    <div class="close-btn" onclick="closeInstructionBar()">
+
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -187,8 +200,8 @@
             <button id="instructionsButton" class="menu-button neon-button">Instructions</button>
             <button id="exitButton" class="menu-button neon-button">Exit</button>
 
-            <div id="instructionBar" class="chat-bar">
-    <div class="close-btn" onclick="closeInstructionBar()">x</div>
+            <div id="instructionBar" class="chat-bar" style="font-size: 18px; line-height: 1.5;">
+    <div class="close-btn" onclick="closeInstructionBar()" style="font-size: 20px;">x</div>
     <p>In City Jump, your goal is to collect as many coins as possible without falling into the lava. The longer you run, the faster your character will become, making it harder to land on platforms.</p>
     
     <p><strong>Master the basic controls:</strong><br>
@@ -220,6 +233,7 @@
     
     <p>Follow these steps and keep practicing to get better and better at City Jump. Have fun and good luck breaking your records!</p>
 </div>
+
 
             <!-- Exit balk -->
             <div id="exitBar" class="chat-bar">
