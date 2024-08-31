@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>City Jump</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             margin: 0;
@@ -450,17 +449,16 @@
         const coins = [];
 
         function handleJump() {
-            if (player.isJumping) return; // Prevent jumping while in mid-air
-
             const currentTime = new Date().getTime();
             const timeDifference = currentTime - lastTapTime;
 
             if (timeDifference < 300) { // Double-tap detected
                 player.velocityY = -player.jumpHeight * 2; // Double jump height
-            } else {
+            } else if (!player.isJumping) {
                 player.velocityY = -player.jumpHeight; // Normal jump height
             }
 
+            player.isJumping = true;
             lastTapTime = currentTime;
         }
 
