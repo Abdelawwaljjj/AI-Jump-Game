@@ -267,8 +267,11 @@
         let animationFrame = 0;
         let characterImage1 = new Image();
         let characterImage2 = new Image();
-        let floorImage = new Image();
         let explosionImage = new Image();
+
+        // Lava variables
+        let lavaFlowOffset = 0;
+        let lavaFlowSpeed = 1;
 
         function loadAssets(callback) {
             backgroundImage.src = 'gamebackground2.png';
@@ -277,12 +280,9 @@
                 characterImage1.onload = function () {
                     characterImage2.src = 'character2.png';
                     characterImage2.onload = function () {
-                        floorImage.src = 'lavafloor.png';
-                        floorImage.onload = function () {
-                            explosionImage.src = 'T-fireexplosion.png';
-                            explosionImage.onload = function () {
-                                callback();
-                            };
+                        explosionImage.src = 'T-fireexplosion.png';
+                        explosionImage.onload = function () {
+                            callback();
                         };
                     };
                 };
@@ -562,6 +562,7 @@
 
         const smokeParticles = [];
         const explosionParticles = [];
+        const emberParticles = [];
 
         class SmokeParticle {
             constructor(x, y) {
@@ -626,6 +627,38 @@
             }
         }
 
+        class EmberParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 2;
+                this.alpha = 1;
+                this.velocityY = Math.random() * -2 - 0.5;
+                this.velocityX = (Math.random() - 0.5) * 1;
+                this.color = `rgba(255, ${Math.floor(Math.random() * 100 + 155)}, 0, 1)`;
+            }
+
+            update() {
+                this.y += this.velocityY;
+                this.x += this.velocityX;
+                this.alpha -= 0.01;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            isDead() {
+                return this.alpha <= 0;
+            }
+        }
+
         function generateSmoke() {
             const floorHeight = 50;
             for (let i = 0; i < 5; i++) {
@@ -636,11 +669,32 @@
             }
         }
 
+        function generateEmbers() {
+            const floorHeight = 50;
+            for (let i = 0; i < 10; i++) {
+                emberParticles.push(new EmberParticle(
+                    Math.random() * canvas.width,
+                    canvas.height - floorHeight - Math.random() * 10
+                ));
+            }
+        }
+
         function drawSmoke() {
             smokeParticles.forEach((particle, index) => {
                 particle.update();
                 if (particle.isDead()) {
                     smokeParticles.splice(index, 1);
+                } else {
+                    particle.draw();
+                }
+            });
+        }
+
+        function drawEmbers() {
+            emberParticles.forEach((particle, index) => {
+                particle.update();
+                if (particle.isDead()) {
+                    emberParticles.splice(index, 1);
                 } else {
                     particle.draw();
                 }
@@ -667,6 +721,24 @@
                     particle.draw();
                 }
             });
+        }
+
+        function drawLava() {
+            const gradient = ctx.createLinearGradient(0, canvas.height - 50, 0, canvas.height);
+            gradient.addColorStop(0, "#FF4500");
+            gradient.addColorStop(0.5, "#FF8C00");
+            gradient.addColorStop(1, "#FF4500");
+
+            lavaFlowOffset += lavaFlowSpeed;
+
+            const pattern = ctx.createPattern(explosionImage, 'repeat-x');
+            ctx.fillStyle = pattern;
+            ctx.translate(lavaFlowOffset, 0);
+            ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+            ctx.translate(-lavaFlowOffset, 0);
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
         }
 
         function resetGame() {
@@ -743,11 +815,12 @@
             ctx.save();
             ctx.translate(-camera.x, 0);
             platforms.forEach((platform) => platform.draw());
-            drawFloor();
+            drawLava(); // Draw the realistic lava with flow and gradient
             ctx.restore();
             coins.forEach((coin) => coin.draw());
 
             drawSmoke();  // Draw smoke above the lava
+            drawEmbers(); // Draw glowing embers above the lava
             drawExplosion();  // Draw explosion effects
             drawCharacter();
             drawScoreBox();
@@ -804,57 +877,6 @@
             }
         }
 
-        function drawFloor() {
-            const tileWidth = floorImage.width;
-            const tileHeight = floorImage.height;
-            const numTiles = Math.ceil(canvas.width / tileWidth) + 1;
-
-            const startX = Math.floor(camera.x / tileWidth) * tileWidth;
-
-            for (let i = 0; i < numTiles; i++) {
-                ctx.drawImage(
-                    floorImage,
-                    startX + i * tileWidth,
-                    canvas.height - 50,
-                    tileWidth,
-                    tileHeight
-                );
-            }
-        }
-
-        function drawScoreBox() {
-            drawRoundedRect(5, 5, 150, 35, 5, 'white', 'black', 3);
-            ctx.fillStyle = 'black';
-            ctx.font = '20px Arial';
-            ctx.fillText(`Score: ${player.score}`, 10, 30);
-        }
-
-        function drawHighScoreBox() {
-            drawRoundedRect(canvas.width - 185, 5, 180, 35, 5, 'white', 'black', 3);
-            ctx.fillStyle = 'black';
-            ctx.font = '20px Arial';
-            ctx.fillText(`High Score: ${highScore}`, canvas.width - 180, 30);
-        }
-
-        function drawGameOverAndReset() {
-            if (gameOver) {
-                ctx.fillStyle = 'red';
-                ctx.font = 'bold 60px Arial';
-                ctx.fillText('Game Over', canvas.width / 2 - 150, canvas.height / 2 - 20);
-
-                ctx.fillStyle = 'blue';
-                const buttonWidth = 160;
-                const buttonHeight = 60;
-                const buttonX = canvas.width / 2 - buttonWidth / 2;
-                const buttonY = canvas.height / 2 + 20;
-
-                ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
-                ctx.fillStyle = 'white';
-                ctx.font = 'bold 30px Arial';
-                ctx.fillText('Reset', buttonX + 40, buttonY + 40);
-            }
-        }
-
         function drawBackground() {
             const scale = canvas.height / backgroundImage.height;
             const scaledWidth = backgroundImage.width * scale;
@@ -888,6 +910,39 @@
                 ctx.lineWidth = borderWidth;
                 ctx.strokeStyle = borderColor;
                 ctx.stroke();
+            }
+        }
+
+        function drawScoreBox() {
+            drawRoundedRect(5, 5, 150, 35, 5, 'white', 'black', 3);
+            ctx.fillStyle = 'black';
+            ctx.font = '20px Arial';
+            ctx.fillText(`Score: ${player.score}`, 10, 30);
+        }
+
+        function drawHighScoreBox() {
+            drawRoundedRect(canvas.width - 185, 5, 180, 35, 5, 'white', 'black', 3);
+            ctx.fillStyle = 'black';
+            ctx.font = '20px Arial';
+            ctx.fillText(`High Score: ${highScore}`, canvas.width - 180, 30);
+        }
+
+        function drawGameOverAndReset() {
+            if (gameOver) {
+                ctx.fillStyle = 'red';
+                ctx.font = 'bold 60px Arial';
+                ctx.fillText('Game Over', canvas.width / 2 - 150, canvas.height / 2 - 20);
+
+                ctx.fillStyle = 'blue';
+                const buttonWidth = 160;
+                const buttonHeight = 60;
+                const buttonX = canvas.width / 2 - buttonWidth / 2;
+                const buttonY = canvas.height / 2 + 20;
+
+                ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 30px Arial';
+                ctx.fillText('Reset', buttonX + 40, buttonY + 40);
             }
         }
 
@@ -964,6 +1019,7 @@
         generatePlatforms();
         loadAssets(function() {
             setInterval(generateSmoke, 100);  // Generate smoke continuously
+            setInterval(generateEmbers, 200); // Generate embers continuously
             gameLoop();
         });
     </script>
