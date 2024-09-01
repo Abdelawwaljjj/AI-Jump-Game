@@ -230,7 +230,35 @@
             </div>
         </div>
     </div>
-    
+        
+        <script>
+        const startGameButton = document.getElementById('startGameButton');
+        const instructionsButton = document.getElementById('instructionsButton');
+        const exitButton = document.getElementById('exitButton');
+
+        const instructionBar = document.getElementById('instructionBar');
+        const exitMessage = document.getElementById('exitMessage');
+
+        startGameButton.addEventListener('click', () => {
+            alert("Game Start");
+        });
+
+        instructionsButton.addEventListener('click', () => {
+            instructionBar.style.display = 'block';
+        });
+
+        exitButton.addEventListener('click', () => {
+            exitMessage.style.display = 'block';
+        });
+
+        function closeInstructionBar() {
+            instructionBar.style.display = 'none';
+        }
+
+        function closeExitMessage() {
+            exitMessage.style.display = 'none';
+        }
+
     <audio id="backgroundMusic" loop>
         <source src="background-music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
